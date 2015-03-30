@@ -22,15 +22,19 @@ namespace CloudFivePush
 		public string APSEnvironment { get; set; }
 		public bool ContentAvailable { get; set; }
 
+		/// <summary>
+		/// Initialize the Notification object and provide your API key
+		/// </summary>
+		/// <param name="apiKey">Your API key provided from cloudfiveapp.com</param>
 		public Notification(string apiKey)
 		{
 			this.APIKey = apiKey;
 		}
 
 		/// <summary>
-		/// 
+		/// Send a message to all registered devices
 		/// </summary>
-		/// <param name="alert"></param>
+		/// <param name="alert">The message you want to send to all devices</param>
 		public void Broadcast(string alert)
 		{
 			this.Audience = "broadcast";
@@ -39,24 +43,24 @@ namespace CloudFivePush
 		}
 
 		/// <summary>
-		/// 
+		/// Send a notification to an individual device
 		/// </summary>
-		/// <param name="alert"></param>
-		/// <param name="userIdentifier"></param>
-		/// <param name="scheduledAt"></param>
-		/// <param name="data"></param>
+		/// <param name="alert">The message you want to send to the specified device</param>
+		/// <param name="userIdentifier">The unique key you specified in the app</param>
+		/// <param name="scheduledAt">The optional date/time you want the notification sent - if not supplied, the notification will be sent immediately</param>
+		/// <param name="data">An optional set of key/value pairs to send down to the device</param>
 		public void Notify(string alert, string userIdentifier, DateTime? scheduledAt = null, IDictionary<String, Object> data = null)
 		{
 			this.Notify(alert, new List<String>() { userIdentifier }, scheduledAt, data);
 		}
 
 		/// <summary>
-		/// 
+		/// Send a notification to a list of devices
 		/// </summary>
-		/// <param name="alert"></param>
-		/// <param name="userIdentifiers"></param>
-		/// <param name="scheduledAt"></param>
-		/// <param name="data"></param>
+		/// <param name="alert">The message you want to send to the specified devices</param>
+		/// <param name="userIdentifiers">A list of unique keys you specified in the app</param>
+		/// <param name="scheduledAt">The optional date/time you want the notification sent - if not supplied, the notification will be sent immediately</param>
+		/// <param name="data">An optional set of key/value pairs to send down to the device</param>
 		public void Notify(string alert, List<String> userIdentifiers, DateTime? scheduledAt = null, IDictionary<String, Object> data = null)
 		{
 			this.Alert = alert;

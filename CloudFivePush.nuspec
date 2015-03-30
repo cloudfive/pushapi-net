@@ -6,7 +6,7 @@
     <title>$title$</title>
     <authors>$author$</authors>
     <owners>$author$</owners>
-    <licenseUrl>http://LICENSE_URL_HERE_OR_DELETE_THIS_LINE</licenseUrl>
+    <licenseUrl>https://github.com/cloudfive/pushapi-net/blob/master/LICENSE.txt</licenseUrl>
     <projectUrl>https://push.cloudfiveapp.com</projectUrl>
     <iconUrl>https://push.cloudfiveapp.com/assets/logo-c8b7748dde4991cf91f8fedb66771b2c.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
