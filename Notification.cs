@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -21,6 +22,20 @@ namespace CloudFivePush
 		public int Badge { get; set; }
 		public string APSEnvironment { get; set; }
 		public bool ContentAvailable { get; set; }
+
+		/// <summary>
+		/// Initialize the Notification object, "CloudFivePushAPIKey" entry required in your web.config
+		/// </summary>
+		public Notification()
+		{
+			string apiKey = ConfigurationManager.AppSettings["CloudFivePushAPIKey"].ToString();
+			if (string.IsNullOrEmpty(apiKey))
+			{
+				throw new Exception("API key is not defined. \"CloudFivePushAPIKey\" not found in web.config app settings.");
+			}
+
+			this.APIKey = apiKey;
+		}
 
 		/// <summary>
 		/// Initialize the Notification object and provide your API key
@@ -74,44 +89,59 @@ namespace CloudFivePush
 		{
 			dynamic data = new ExpandoObject();
 
-			data.api_key = this.APIKey;
-			if (this.Audience == "broadcast")
+			try
 			{
-				data.audience = "broadcast";
-			}
-			else
-			{
-				data.user_identifiers = this.UserIdentifiers;
-			}
-			data.alert = this.Alert;
-			if (!String.IsNullOrEmpty(this.Message))
-			{
-				data.message = this.Message;
-			}
-			if (this.ScheduledAt != null)
-			{
-				data.when = this.ScheduledAt;
-			}
-			if (this.Data != null)
-			{
-				data.data = this.Data;
-			}
-			if (this.Badge > 0)
-			{
-				data.badge = this.Badge;
-			}
-			if (!String.IsNullOrEmpty(this.APSEnvironment))
-			{
-				data.aps_environment = this.APSEnvironment;
-			}
-			if (this.ContentAvailable)
-			{
-				data.content_available = this.ContentAvailable;
-			}
+				data.api_key = this.APIKey;
 
-			JavaScriptSerializer serializer = new JavaScriptSerializer();
-			serializer.RegisterConverters(new JavaScriptConverter[] { new ExpandoJSONContracto() });
-			return serializer.Serialize(data);
+				if (this.Audience == "broadcast")
+				{
+					data.audience = "broadcast";
+				}
+				else
+				{
+					data.user_identifiers = this.UserIdentifiers;
+				}
+
+				data.alert = this.Alert;
+
+				if (!String.IsNullOrEmpty(this.Message))
+				{
+					data.message = this.Message;
+				}
+
+				if (this.ScheduledAt != null)
+				{
+					data.when = this.ScheduledAt;
+				}
+
+				if (this.Data != null)
+				{
+					data.data = this.Data;
+				}
+
+				if (this.Badge > 0)
+				{
+					data.badge = this.Badge;
+				}
+
+				if (!String.IsNullOrEmpty(this.APSEnvironment))
+				{
+					data.aps_environment = this.APSEnvironment;
+				}
+
+				if (this.ContentAvailable)
+				{
+					data.content_available = this.ContentAvailable;
+				}
+
+				JavaScriptSerializer serializer = new JavaScriptSerializer();
+				serializer.RegisterConverters(new JavaScriptConverter[] { new ExpandoJSONContracto() });
+				return serializer.Serialize(data);
+			}
+			catch (Exception ex)
+			{
+				throw new Exception("Error occurred while building JSON payload: " + ex.Message);
+			}
 		}
 
 		private void SendReqeust()
@@ -121,10 +151,17 @@ namespace CloudFivePush
 			string url = "https://www.cloudfiveapp.com/push/notify";
 			string data = BuildParameters();
 
-			using (WebClient wc = new WebClient())
+			try
 			{
-				wc.Headers[HttpRequestHeader.ContentType] = "application/json";
-				string HtmlResult = wc.UploadString(url, data);
+				using (WebClient wc = new WebClient())
+				{
+					wc.Headers[HttpRequestHeader.ContentType] = "application/json";
+					string HtmlResult = wc.UploadString(url, data);
+				}
+			}
+			catch (Exception ex)
+			{
+				throw new Exception("Error occurred while attempting to send the request: " + ex.Message);
 			}
 		}
 	}

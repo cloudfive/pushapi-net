@@ -6,13 +6,13 @@
     <title>$title$</title>
     <authors>$author$</authors>
     <owners>$author$</owners>
-    <licenseUrl>https://github.com/cloudfive/pushapi-net/blob/master/LICENSE.txt</licenseUrl>
-    <projectUrl>https://push.cloudfiveapp.com</projectUrl>
+    <licenseUrl>https://github.com/cloudfive/pushapi-net/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://push.cloudfiveapp.com/</projectUrl>
     <iconUrl>https://push.cloudfiveapp.com/assets/logo-c8b7748dde4991cf91f8fedb66771b2c.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
-    <releaseNotes>Initial release.</releaseNotes>
-    <copyright>Copyright 2015</copyright>
-    <tags>push notifications</tags>
+    <releaseNotes>Added config settings and additional error handling</releaseNotes>
+    <copyright>Copyright 2015 Ten Forward Consulting, Inc.</copyright>
+    <tags>"Push Notifications"</tags>
   </metadata>
 </package>
